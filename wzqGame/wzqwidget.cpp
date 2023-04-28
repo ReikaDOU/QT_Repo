@@ -129,6 +129,37 @@ bool wzqWidget::isOverLine(int x, int y)
 
 bool wzqWidget::isWin(int x, int y)
 {
+    int num=1;
+    for(int fx = d_z;fx<8;fx+=2)
+    {
+        for(int i=1;i<=4;++i)
+        {
+            int xx=dx[fx]*i+x;
+            int yy=dy[fx]*i+y;
+
+            if(isOverLine(xx,yy))
+            {
+                break;
+            }
+            if(m_board[xx][yy]==m_board[x][y])
+            {
+                num++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        if(num>=5)
+            break;
+        else
+            num=1;
+    }
+    if(num>=5)
+    {
+        m_isOver = true;
+        return true;
+    }
     return false;
 }
 
@@ -161,6 +192,7 @@ void wzqWidget::slot_pieceDown(int color, int x,int y)
         {
             QString str =getBlackOrWhite()==Black? "黑胜":"白胜";
             QMessageBox::about(this,"提示",str);
+            clear();
         }
         else
         {
